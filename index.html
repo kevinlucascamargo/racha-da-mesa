@@ -123,7 +123,8 @@ header.top{
 .tab[aria-selected="true"]{background:var(--brass-soft);border-color:var(--brass);color:var(--brass-ink);font-weight:600}
 .tab.add{border-style:dashed;color:var(--ink-3)}
 
-.grid{display:grid;grid-template-columns:1fr;gap:16px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+main,.side{min-width:0}
 @media(min-width:940px){
   .grid{grid-template-columns:minmax(0,1fr) 372px;gap:20px;align-items:start}
   .side{position:sticky;top:72px}
@@ -141,13 +142,14 @@ header.top{
 label.f{display:flex;flex-direction:column;gap:5px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:600}
 input[type=text],input[type=date],input[type=number],select{
   background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:8px 10px;
-  width:100%;transition:.13s;font-size:15px;
+  width:100%;min-width:0;transition:.13s;font-size:15px;
 }
 input:focus-visible,select:focus-visible,button:focus-visible,.avt:focus-visible{
   outline:2px solid var(--brass);outline-offset:1px;
 }
 input::placeholder{color:var(--ink-3)}
 .row-fields{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.row-fields > label.f{min-width:0}
 .row-fields.three{grid-template-columns:1fr 1fr 1fr}
 
 .btn{
@@ -207,9 +209,6 @@ button.avt[aria-pressed="true"]{opacity:1;filter:none}
 .chk input{width:auto;accent-color:var(--brass)}
 
 /* ---------- results ---------- */
-.res-line{display:flex;align-items:baseline;gap:10px;padding:8px 15px;font-size:14px}
-.res-line .l{color:var(--ink-2)}
-.res-line .v{margin-left:auto}
 .res-total{display:flex;align-items:baseline;gap:10px;padding:13px 15px;border-top:1px solid var(--line-strong);background:var(--surface-2)}
 .res-total .l{font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:600;color:var(--ink-2)}
 .res-total .v{margin-left:auto;font-size:23px;font-weight:500}
@@ -217,7 +216,8 @@ button.avt[aria-pressed="true"]{opacity:1;filter:none}
 .pay:last-of-type{border-bottom:none}
 .pay .pn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pay .amt{font-size:16px}
-.pay .brk{font-size:11px;color:var(--ink-3);display:block;font-family:"DM Mono",monospace}
+.pay .brk{font-size:11px;color:var(--ink-3);display:block;font-family:"DM Mono",monospace;
+  white-space:normal;overflow-wrap:anywhere}
 .tag{font-size:11px;padding:2px 7px;border-radius:99px;background:var(--brass-soft);color:var(--brass-ink);font-weight:600;white-space:nowrap}
 .diff{padding:10px 15px;font-size:13px;border-top:1px solid var(--line)}
 .diff.ok{color:var(--get)}
@@ -240,6 +240,26 @@ dialog{border:1px solid var(--line);background:var(--surface);color:var(--ink);b
 dialog::backdrop{background:rgba(0,0,0,.45)}
 dialog .card-b{padding:16px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- celular ---------- */
+@media (max-width:640px){
+  /* tres campos nao cabem: os longos ocupam a linha toda, os curtos dividem */
+  .row-fields.three{grid-template-columns:1fr 1fr}
+  .row-fields .wide{grid-column:1 / -1}
+  /* abaixo de 16px o iOS da zoom sozinho ao focar o campo */
+  input[type=text],input[type=date],input[type=number],select{font-size:16px}
+  .btn{min-height:38px}
+  .btn.sm{min-height:34px}
+  .item{gap:6px;padding-left:12px;padding-right:8px}
+  .item .val{width:82px}
+  .item .qtd{width:38px}
+  .item .btn.ghost{padding:8px 6px}
+  .add-row{padding-left:12px;padding-right:12px}
+  .add-row input.v{width:88px}
+  .card-h,.card-b,.empty,.hint,.res-total,.pay,.diff{padding-left:12px;padding-right:12px}
+  .brand small{display:none}
+  .top-in{gap:8px;padding:10px 12px}
+}
 
 @media print{
   header.top,.tabs,.bar,.add-row,.btn,.hint{display:none!important}
@@ -275,7 +295,7 @@ dialog .card-b{padding:16px}
         </div>
         <div class="card-b">
           <div class="row-fields three">
-            <label class="f">Lugar
+            <label class="f wide">Lugar
               <input type="text" id="fNome" placeholder="Onde foi o rolê">
             </label>
             <label class="f">Data
@@ -292,7 +312,7 @@ dialog .card-b{padding:16px}
             <label class="f">Couvert por pessoa
               <input type="text" inputmode="decimal" id="fCouvert" class="money">
             </label>
-            <label class="f">Quem pagou a conta
+            <label class="f wide">Quem pagou a conta
               <select id="fPagador"></select>
             </label>
           </div>
