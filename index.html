@@ -31,6 +31,8 @@
   --brass-soft:#F0E4CC;
   --owe:#A83B32;
   --get:#2E6455;
+  --del:#B0574C;
+  --del-soft:#F6E4E1;
   --chip-s:40%;
   --chip-l:88%;
   --chip-fg:26%;
@@ -52,6 +54,8 @@
     --brass-soft:#3A2E19;
     --owe:#E0776C;
     --get:#5FB59C;
+    --del:#D98D84;
+    --del-soft:#3A241F;
     --chip-s:32%;
     --chip-l:26%;
     --chip-fg:80%;
@@ -72,6 +76,8 @@
   --brass-soft:#3A2E19;
   --owe:#E0776C;
   --get:#5FB59C;
+  --del:#D98D84;
+  --del-soft:#3A241F;
   --chip-s:32%;
   --chip-l:26%;
   --chip-fg:80%;
@@ -153,6 +159,8 @@ input::placeholder{color:var(--ink-3)}
 .btn.primary:hover{filter:brightness(1.07)}
 .btn.ghost{border-color:transparent;background:transparent;color:var(--ink-3);padding:6px 8px}
 .btn.ghost:hover{color:var(--owe);background:var(--surface-2)}
+.btn.danger{color:var(--del)}
+.btn.danger:hover{background:var(--del-soft);border-color:var(--del)}
 .btn.sm{padding:5px 9px;font-size:13px}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap}
 
@@ -227,6 +235,7 @@ button.avt[aria-pressed="true"]{opacity:1;filter:none}
 .bar .tot{font-size:20px}
 
 .hint{font-size:12.5px;color:var(--ink-3);padding:0 15px 12px;line-height:1.5}
+.hint.inline{padding:12px 0 0}
 dialog{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:0;max-width:min(420px,92vw);box-shadow:var(--shadow)}
 dialog::backdrop{background:rgba(0,0,0,.45)}
 dialog .card-b{padding:16px}
@@ -262,7 +271,7 @@ dialog .card-b{padding:16px}
       <!-- Configuração do rolê -->
       <section class="card">
         <div class="card-h"><h2>O rolê</h2>
-          <button class="btn ghost sm" id="btnDel" style="margin-left:auto">Excluir</button>
+          <button class="btn sm danger" id="btnDel" style="margin-left:auto">Excluir rolê</button>
         </div>
         <div class="card-b">
           <div class="row-fields three">
@@ -287,6 +296,8 @@ dialog .card-b{padding:16px}
               <select id="fPagador"></select>
             </label>
           </div>
+          <p class="hint inline">Este rolê fica salvo neste navegador até você excluir — fechar a aba não apaga nada.
+          Ao sair, o navegador confirma a saída, e é a sua chance de voltar e excluir antes.</p>
         </div>
       </section>
 
@@ -929,6 +940,19 @@ document.getElementById("btnZap").onclick = async e => {
 document.getElementById("btnPrint").onclick = () => window.print();
 document.getElementById("btnVerRes").onclick = () =>
   document.querySelector(".side").scrollIntoView({behavior:"smooth", block:"start"});
+
+/* ---------- lembrete ao fechar a aba ---------- */
+// O navegador nao deixa personalizar o texto desse aviso: ele mostra a propria
+// frase generica de "sair do site?". O nosso recado fica no .hint da pagina.
+function temConteudo(){
+  const r = role();
+  return !!r && (r.pessoas.length > 0 || r.itens.length > 0 || r.comp.length > 0);
+}
+window.addEventListener("beforeunload", e => {
+  if (!temConteudo()) return;   // rolê vazio sai sem incomodar
+  e.preventDefault();
+  e.returnValue = "";
+});
 
 /* ---------- tema (só nas versões standalone) ---------- */
 const TKEY = "racha-da-mesa/tema";
