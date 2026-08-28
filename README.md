@@ -31,11 +31,16 @@ e o rateio das porções que não entrava no total de ninguém.
 
 ## Privacidade
 
-Não existe backend. Tudo fica no `localStorage` do seu próprio navegador — os dados
-nunca saem do seu aparelho, e quem abre o site não vê nada do que você lançou.
+Não existe backend. Nada do que você digita sai do seu aparelho, e quem abre o site
+não vê nada do que você lançou.
 
-Como consequência: os rolês são por navegador e por aparelho. Limpar os dados do site
-apaga o histórico, e o que você lança no celular não aparece no computador.
+O site guarda o rolê em `sessionStorage`, não em `localStorage`: **ao fechar a aba, o
+navegador descarta tudo.** Atualizar a página no meio da divisão não perde nada, mas
+fechar perde — de propósito, para não deixar a conta de ninguém esquecida no navegador
+de um computador compartilhado.
+
+Se quiser guardar o histórico dos rolês entre um dia e outro, baixe o `index.html` e
+troque `sessionStorage` por `localStorage` na linha do `const STORE`.
 
 ## Rodar offline
 
