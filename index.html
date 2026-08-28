@@ -212,12 +212,12 @@ button.avt[aria-pressed="true"]{opacity:1;filter:none}
 .res-total{display:flex;align-items:baseline;gap:10px;padding:13px 15px;border-top:1px solid var(--line-strong);background:var(--surface-2)}
 .res-total .l{font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:600;color:var(--ink-2)}
 .res-total .v{margin-left:auto;font-size:23px;font-weight:500}
-.pay{display:flex;align-items:center;gap:10px;padding:10px 15px;border-bottom:1px solid var(--line)}
+.pay{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:10px 15px;border-bottom:1px solid var(--line)}
 .pay:last-of-type{border-bottom:none}
 .pay .pn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pay .amt{font-size:16px}
-.pay .brk{font-size:11px;color:var(--ink-3);display:block;font-family:"DM Mono",monospace;
-  white-space:normal;overflow-wrap:break-word}
+.pay .brk{flex:0 0 100%;margin-left:36px;font-size:11px;color:var(--ink-3);
+  font-family:"DM Mono",ui-monospace,monospace;line-height:1.4}
 .tag{font-size:11px;padding:2px 7px;border-radius:99px;background:var(--brass-soft);color:var(--brass-ink);font-weight:600;white-space:nowrap}
 .diff{padding:10px 15px;font-size:13px;border-top:1px solid var(--line)}
 .diff.ok{color:var(--get)}
@@ -765,20 +765,18 @@ function renderResultado(){
     if (o.rachado) partes.push("mesa " + fmt(o.rachado));
     if (o.taxa) partes.push("taxa " + fmt(o.taxa));
     if (o.couvert) partes.push("couvert " + fmt(o.couvert));
-    nm.innerHTML = "";
-    nm.append(document.createTextNode(p.nome));
+    nm.textContent = p.nome;
     const brk = document.createElement("small");
     brk.className = "brk"; brk.textContent = partes.join("  ·  ") || "nada ainda";
-    nm.appendChild(brk);
     const amt = document.createElement("span");
     amt.className = "amt money"; amt.textContent = fmt(o.total);
     if (r.pagador === p.id){
       amt.style.color = "var(--get)";
       const t = document.createElement("span");
       t.className = "tag"; t.textContent = "pagou";
-      div.append(av, nm, t, amt);
+      div.append(av, nm, t, amt, brk);
     } else {
-      div.append(av, nm, amt);
+      div.append(av, nm, amt, brk);
     }
     box.appendChild(div);
   }
