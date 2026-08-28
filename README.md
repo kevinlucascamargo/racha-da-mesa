@@ -3,7 +3,7 @@
 Divisor de conta de bar entre amigos. Um arquivo HTML, sem servidor, sem cadastro,
 sem enviar nada pra lugar nenhum.
 
-**Acesse:** _(link do GitHub Pages entra aqui)_
+**Acesse:** https://kevinlucascamargo.github.io/racha-da-mesa/
 
 ## Por que existe
 
